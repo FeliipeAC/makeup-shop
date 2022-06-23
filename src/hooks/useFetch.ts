@@ -31,6 +31,7 @@ export function useFetch<T = unknown>(params?: ParamsFetch) {
       })
       .catch((error) => {
         console.error(error);
+        setError(error);
       })
       .finally(() => {
         setIsFetching(false);

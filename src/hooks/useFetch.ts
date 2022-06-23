@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import axios from "axios";
+import { Makeup } from "../utils/models/makeup.type";
 
 export type ParamsFetch = {
   product_type: string;
@@ -26,7 +27,10 @@ export function useFetch<T = unknown>(params?: ParamsFetch) {
         params,
       })
       .then((response) => {
-        setData(response.data);
+        const orderedData = response.data.sort(
+          (a: Makeup, b: Makeup) => b.rating - a.rating
+        );
+        setData(orderedData);
       })
       .catch((error) => {
         console.error(error);

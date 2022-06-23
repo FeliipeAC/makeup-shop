@@ -41,7 +41,7 @@ export function CardMakeup({ data }: Props) {
 
         <div className="actions">
           <Button variant="outlined" size="large">
-            More
+            View more
           </Button>
 
           <Button variant="contained" size="large" disableElevation>

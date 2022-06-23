@@ -26,7 +26,6 @@ export function useFetch<T = unknown>(params?: ParamsFetch) {
         params,
       })
       .then((response) => {
-        console.log(response.data);
         setData(response.data);
       })
       .catch((error) => {

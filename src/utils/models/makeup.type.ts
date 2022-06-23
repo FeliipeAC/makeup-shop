@@ -19,7 +19,7 @@ export type Makeup = {
   product_colors: ProductColor[];
   product_link: string;
   product_type: string;
-  api_featurratinged_image: number;
+  rating: number;
   tag_list: string[];
   updated_at: string;
   website_link: string;

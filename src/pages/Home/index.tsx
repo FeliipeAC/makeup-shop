@@ -5,6 +5,7 @@ import { CardMakeup } from "../../components/Card";
 import { Makeup } from "../../utils/models/makeup.type";
 import { Paginate } from "../../components/Paginate";
 import { CardShimmer } from "../../components/CardShimmer";
+import { Filters } from "../../components/Filters";
 
 export function Home() {
   const { data, isFetching, error } = useFetch<Makeup[]>();
@@ -33,6 +34,7 @@ export function Home() {
 
       {data && (
         <div>
+          <Filters />
           <Grid
             container
             spacing={{ xs: 8 }}

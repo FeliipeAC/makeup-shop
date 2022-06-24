@@ -27,12 +27,12 @@ export function CardMakeup({ data }: Props) {
         <div className="buy-container">
           <div>
             {data.brand && (
-              <span className="info">
-                <b>{data.brand}</b> |{" "}
-              </span>
+              <>
+                <span className="info brand">{data.brand} </span>|
+              </>
             )}
 
-            <span className="info">{data.product_colors.length} colors</span>
+            <span className="info"> {data.product_colors.length} colors</span>
           </div>
           <p>
             {data.price_sign} {data.price}

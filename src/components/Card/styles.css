@@ -52,6 +52,11 @@ span.info {
   color: rgba(0, 0, 0, 0.6);
 }
 
+span.brand {
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
 .buy-container {
   margin-top: 20px;
   display: flex;

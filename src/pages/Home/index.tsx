@@ -65,6 +65,8 @@ export function Home() {
       {data && (
         <div>
           <Filters handleFilter={filterItems} />
+
+          <p className="total-results">{data?.length} results found</p>
           <Grid
             container
             spacing={{ xs: 8 }}

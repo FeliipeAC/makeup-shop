@@ -18,6 +18,14 @@ export function Filters({ handleFilter }: Props) {
   const [category, setCategory] = useState<ListItem | null>(null);
   const [brand, setBrand] = useState<ListItem | null>(null);
 
+  function resetFilters() {
+    setType(null);
+    setCategory(null);
+    setBrand(null);
+
+    handleFilter();
+  }
+
   return (
     <Grid
       container
@@ -31,6 +39,7 @@ export function Filters({ handleFilter }: Props) {
           disablePortal
           options={productTypes}
           renderInput={(params) => <TextField {...params} label="Types" />}
+          value={type}
           onChange={(event: any, newValue: any | null) => {
             setType(newValue);
           }}
@@ -40,6 +49,7 @@ export function Filters({ handleFilter }: Props) {
         <Autocomplete
           disablePortal
           options={productCategories}
+          value={category}
           renderInput={(params) => <TextField {...params} label="Categories" />}
           onChange={(event: any, newValue: any | null) => {
             setCategory(newValue);
@@ -51,8 +61,10 @@ export function Filters({ handleFilter }: Props) {
           disablePortal
           options={productBrands}
           renderInput={(params) => <TextField {...params} label="Brands" />}
+          value={brand}
           onChange={(event: any, newValue: any | null) => {
             setBrand(newValue);
+            console.log(newValue);
           }}
         />
       </Grid>
@@ -62,7 +74,7 @@ export function Filters({ handleFilter }: Props) {
             <Button
               variant="outlined"
               size="large"
-              onClick={() => handleFilter()}
+              onClick={() => resetFilters()}
             >
               Reset
             </Button>

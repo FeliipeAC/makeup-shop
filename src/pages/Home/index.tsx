@@ -6,35 +6,65 @@ import { Makeup } from "../../utils/models/makeup.type";
 import { Paginate } from "../../components/Paginate";
 import { CardShimmer } from "../../components/CardShimmer";
 import { Filters } from "../../components/Filters";
+import imageError from "../../assets/images/undraw_makeup_artist_rxn8.svg";
+
+import "./styles.css";
+import { ApiService, ParamsFetch } from "../../services/api-service";
 
 export function Home() {
-  const { data, isFetching, error } = useFetch<Makeup[]>();
   const [currentPage, setCurrentPage] = useState(1);
-  const itensPerPage = 20;
+  const itemsPerPage = 20;
+  const [data, setData] = useState<Makeup[] | null>(null);
+  const [isFetching, setIsFetching] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   function handleCurrentPage(event: React.ChangeEvent<unknown>, value: number) {
     setCurrentPage(value);
   }
 
+  function getData(params?: ParamsFetch) {
+    ApiService(params)
+      .then((response) => {
+        const orderedData = response.data.sort(
+          (a: Makeup, b: Makeup) => b.rating - a.rating
+        );
+        setData(orderedData);
+      })
+      .catch((error) => {
+        console.error(error);
+        setError(error);
+      })
+      .finally(() => {
+        setIsFetching(false);
+      });
+  }
+
+  function filterItems(params: any) {
+    setIsFetching(true);
+    setData([]);
+    let filters: ParamsFetch | undefined;
+    console.log(params);
+
+    if (params) {
+      filters = {
+        brand: params?.brand?.id,
+        product_category: params?.category?.id,
+        product_type: params?.type?.id,
+      };
+    }
+
+    getData(filters);
+  }
+
   return (
     <>
-      {isFetching && (
-        <Grid
-          container
-          spacing={{ xs: 8 }}
-          columns={{ xs: 6, lg: 12, sm: 12, md: 12 }}
-        >
-          {[1, 2, 3, 4].map((item) => (
-            <Grid item xs={12} sm={6} md={6} lg={3} key={item}>
-              <CardShimmer />
-            </Grid>
-          ))}
-        </Grid>
-      )}
-
       {data && (
         <div>
-          <Filters />
+          <Filters handleFilter={filterItems} />
           <Grid
             container
             spacing={{ xs: 8 }}
@@ -42,8 +72,8 @@ export function Home() {
           >
             {data
               ?.slice(
-                (currentPage - 1) * itensPerPage,
-                currentPage * itensPerPage
+                (currentPage - 1) * itemsPerPage,
+                currentPage * itemsPerPage
               )
               .map((item) => (
                 <Grid item xs={12} sm={6} md={6} lg={3} key={item.id}>
@@ -52,11 +82,39 @@ export function Home() {
               ))}
           </Grid>
 
-          <Paginate
-            totalPages={data ? Math.floor(data.length / itensPerPage) : 0}
-            currentPage={currentPage}
-            handlePage={handleCurrentPage}
-          />
+          {data.length > itemsPerPage && (
+            <Paginate
+              totalPages={data ? Math.floor(data.length / itemsPerPage) : 0}
+              currentPage={currentPage}
+              handlePage={handleCurrentPage}
+            />
+          )}
+        </div>
+      )}
+
+      {isFetching && (
+        <div style={{ paddingTop: "64px" }}>
+          <Grid
+            container
+            spacing={{ xs: 8 }}
+            columns={{ xs: 6, lg: 12, sm: 12, md: 12 }}
+          >
+            {[1, 2, 3, 4].map((item) => (
+              <Grid item xs={12} sm={6} md={6} lg={3} key={item}>
+                <CardShimmer />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
+      )}
+
+      {!isFetching && (error || data?.length === 0) && (
+        <div className="container-error">
+          <img src={imageError} alt="Error" />
+          <h1>
+            Ops!{" "}
+            {data?.length === 0 ? "No results found." : "Something went wrong."}
+          </h1>
         </div>
       )}
     </>

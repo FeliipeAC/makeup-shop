@@ -1,0 +1,13 @@
+.container-error {
+  margin: 50px auto;
+}
+
+.container-error img {
+  max-width: 400px;
+}
+
+.container-error h1 {
+  margin: 16px 0 0 0;
+  font-size: 22px;
+  color: rgba(0, 0, 0, 0.6);
+}

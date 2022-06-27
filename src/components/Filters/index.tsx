@@ -4,10 +4,19 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 
-export function Filters() {
-  const [types, setTypes] = useState();
-  const [category, setCategory] = useState();
-  const [brand, setBrand] = useState();
+type Props = {
+  handleFilter?: any;
+};
+
+type ListItem = {
+  id: string;
+  label: string;
+};
+
+export function Filters({ handleFilter }: Props) {
+  const [type, setType] = useState<ListItem | null>(null);
+  const [category, setCategory] = useState<ListItem | null>(null);
+  const [brand, setBrand] = useState<ListItem | null>(null);
 
   return (
     <Grid
@@ -21,17 +30,15 @@ export function Filters() {
         <Autocomplete
           disablePortal
           options={productTypes}
-          value={types}
           renderInput={(params) => <TextField {...params} label="Types" />}
           onChange={(event: any, newValue: any | null) => {
-            setTypes(newValue);
+            setType(newValue);
           }}
         />
       </Grid>
       <Grid item xs={12} sm={6} lg={3}>
         <Autocomplete
           disablePortal
-          value={category}
           options={productCategories}
           renderInput={(params) => <TextField {...params} label="Categories" />}
           onChange={(event: any, newValue: any | null) => {
@@ -42,7 +49,6 @@ export function Filters() {
       <Grid item xs={12} sm={6} lg={3}>
         <Autocomplete
           disablePortal
-          value={brand}
           options={productBrands}
           renderInput={(params) => <TextField {...params} label="Brands" />}
           onChange={(event: any, newValue: any | null) => {
@@ -53,12 +59,22 @@ export function Filters() {
       <Grid item xs={12} sm={6} lg={3}>
         <Grid container rowSpacing={2} columnSpacing={2}>
           <Grid item>
-            <Button variant="outlined" size="large">
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => handleFilter()}
+            >
               Reset
             </Button>
           </Grid>
           <Grid item>
-            <Button variant="contained" size="large" disableElevation>
+            <Button
+              variant="contained"
+              size="large"
+              disableElevation
+              disabled={!type && !brand && !category}
+              onClick={() => handleFilter({ type, category, brand })}
+            >
               Filter
             </Button>
           </Grid>
@@ -68,7 +84,7 @@ export function Filters() {
   );
 }
 
-const productTypes = [
+const productTypes: ListItem[] = [
   {
     id: "blush",
     label: "Blush",
@@ -111,7 +127,7 @@ const productTypes = [
   },
 ];
 
-const productCategories = [
+const productCategories: ListItem[] = [
   {
     id: "bb_cc",
     label: "Bb Cc",
@@ -170,7 +186,7 @@ const productCategories = [
   },
 ];
 
-const productBrands = [
+const productBrands: ListItem[] = [
   { id: "almay", label: "almay" },
   { id: "alva", label: "alva" },
   { id: "anna_sui", label: "anna sui" },

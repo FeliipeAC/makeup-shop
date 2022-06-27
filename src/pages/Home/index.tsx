@@ -47,7 +47,6 @@ export function Home() {
     setIsFetching(true);
     setData([]);
     let filters: ParamsFetch | undefined;
-    console.log(params);
 
     if (params) {
       filters = {

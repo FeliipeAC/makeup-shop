@@ -64,7 +64,6 @@ export function Filters({ handleFilter }: Props) {
           value={brand}
           onChange={(event: any, newValue: any | null) => {
             setBrand(newValue);
-            console.log(newValue);
           }}
         />
       </Grid>
